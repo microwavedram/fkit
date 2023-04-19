@@ -8,7 +8,11 @@
         "$path": "Packages"
       },
       "Common": {
-        "$path": "src/shared"
+        "$path": "src/shared",
+        "Configuration": {
+          "$className": "Configuration",
+          "$path": "src/shared/config"
+        }
       }
     },
 
