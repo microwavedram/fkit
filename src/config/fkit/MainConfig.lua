@@ -1,3 +1,4 @@
-CONFIG_VERSION = 1
+-- Main Config
+return do local FKIT_CONFIG = {
 
-return getfenv()
+}
