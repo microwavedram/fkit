@@ -13,19 +13,19 @@ local ViewmodelController = Knit.CreateController { Name = "ViewmodelController"
 local LocalPlayer = Players.LocalPlayer
 
 function ViewmodelController:MakeArms()
-    local Arms = self.Arms:Clone()
-    Arms.Parent = workspace.CurrentCamera
+    self.CurrentViewmodel = self._Arms:Clone()
+    self.CurrentViewmodel.Parent = workspace.CurrentCamera
 
-    RunService:BindToRenderStep("fKit.ArmsAttach", Enum.RenderPriority.Camera.Value + 1, function()
-        Arms:PivotTo(workspace.CurrentCamera.CFrame)
+    RunService:BindToRenderStep("fKit.ArmsAttach", Enum.RenderPriority.Camera.Value + 2, function()
+        self.CurrentViewmodel:PivotTo(workspace.CurrentCamera.CFrame)
     end)
 end
 
 function ViewmodelController:KnitStart()
     ResourceService = Knit.GetService("ResourceService")
 
-    self.Arms = ResourceService:RequestResource(Config.ARMS):expect()
-    self.Arms.Parent = nil
+    self._Arms = ResourceService:RequestResource(Config.ARMS):expect()
+    self._Arms.Parent = nil
 
     self:MakeArms()
 end

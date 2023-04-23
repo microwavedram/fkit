@@ -3,9 +3,9 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
 local LocalTool = {}
-function LocalTool.ShouldConstruct(component)
+function LocalTool.ShouldConstruct(component) 
     if LocalPlayer.Character then
-        if component:IsDescendantOf(LocalPlayer.Backpack) then
+        if component.Instance:IsDescendantOf(LocalPlayer.Backpack) then
             return true
         end
     end

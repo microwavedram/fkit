@@ -25,7 +25,7 @@ end
 
 function Logger:Debug(message,...)
     if self.IsDebug == false then return end
-    warn(`[DEBUG [{os.date("%X",os.time())}] [{self.LogName}] [{getfenv(2).script.Name}] : {self._languageParser(message,...)}`)
+    warn(`[DEBUG] [{os.date("%X",os.time())}] [{self.LogName}] [{getfenv(2).script.Name}] : {self._languageParser(message,...)}`)
 end
 
 function Logger.__call(self, message,...)
