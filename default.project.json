@@ -4,28 +4,41 @@
     "$className": "DataModel",
 
     "ReplicatedStorage": {
-      "Packages": {
-        "$path": "Packages"
-      },
-      "Common": {
-        "$path": "src/shared",
+      "fKit": {
+        "$className": "Folder",
+        "Packages": {
+          "$path": "Packages"
+        },
+        "Common": {
+          "$path": "src/shared"
+        },
         "Configuration": {
           "$className": "Configuration",
-          "$path": "src/shared/config"
+          "$path": "src/config"
         }
       }
     },
 
     "ServerScriptService": {
-      "Server": {
-        "$path": "src/server"
+      "fKit": {
+        "$className": "Folder",
+        "Server": {
+          "$path": "src/server"
+        },
+        "Resources": {
+          "$className": "Folder",
+          "$ignoreUnknownInstances": true
+        }
       }
     },
 
     "StarterPlayer": {
       "StarterPlayerScripts": {
-        "Client": {
-          "$path": "src/client"
+        "fKit": {
+          "$className": "Folder",
+          "Client": {
+            "$path": "src/client"
+          }
         }
       }
     }
