@@ -19,6 +19,8 @@ function fKitGun:Start()
     self.Instance.AncestryChanged:Connect(function()
         if self.Instance.Parent == LocalPlayer.Character then
             GunController:EquipGun(self.Instance.Gun.Value)
+        elseif GunController.CurrentGun == self.Instance.Gun.Value then
+            GunController:UnEquipGun()
         end
     end)
 end
