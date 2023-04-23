@@ -1,2 +1,3 @@
 # fkit
-no bullshit roblox gun system
+no bullshit OTS&FPS roblox gun system
+(in development)
