@@ -1,0 +1,120 @@
+{
+    "Service": {
+        "prefix": ["service"],
+        "body": ["local ${0:Name} = game:GetService(\"${0:Name}\")"],
+        "description": "Roblox Service"
+    },
+
+    "Class": {
+        "prefix": ["class"],
+        "body": [
+            "local ${0:$TM_FILENAME_BASE} = {}",
+            "${0:$TM_FILENAME_BASE}.__index = ${0:$TM_FILENAME_BASE}",
+            "",
+            "function ${0:$TM_FILENAME_BASE}.new()",
+            "\tlocal self = setmetatable({}, ${0:$TM_FILENAME_BASE})",
+            "\treturn self",
+            "end",
+            "",
+            "function ${0:$TM_FILENAME_BASE}:Destroy()",
+            "\t",
+            "end",
+            "",
+            "return ${0:$TM_FILENAME_BASE}"
+        ],
+        "description": "Lua Class"
+    },
+
+    "Knit": {
+        "prefix": ["knit"],
+        "body": [
+			"local ReplicatedStorage = game:GetService(\"ReplicatedStorage\")",
+            "",
+			"local Knit = require(ReplicatedStorage.fKit.Packages.Knit)"
+		],
+        "description": "Require the Knit module"
+    },
+
+    "Knit Service": {
+        "prefix": ["knitservice"],
+        "body": [
+			"local ReplicatedStorage = game:GetService(\"ReplicatedStorage\")",
+            "",
+            "local Knit = require(ReplicatedStorage.fKit.Packages.Knit)",
+            "",
+            "local ${0:$TM_FILENAME_BASE} = Knit.CreateService {",
+            "\tName = \"${0:$TM_FILENAME_BASE}\",",
+            "\tClient = {},",
+            "}",
+            "",
+            "function ${0:$TM_FILENAME_BASE}:KnitStart()",
+            "\t",
+            "end",
+            "",
+            "function ${0:$TM_FILENAME_BASE}:KnitInit()",
+            "\t",
+            "end",
+            "",
+            "return ${0:$TM_FILENAME_BASE}"
+        ],
+        "description": "Knit Service template"
+    },
+
+    "Component": {
+        "prefix": ["component"],
+        "body": [
+			"local ReplicatedStorage = game:GetService(\"ReplicatedStorage\")",
+            "",
+            "local Component = require(ReplicatedStorage.fKit.Packages.Component)",
+            "",
+            "local ${0:${TM_FILENAME_BASE/[^0-9^a-z]//gi}} = Component.new{ Tag = \"${1:$TM_FILENAME_BASE}\", Ancestors = {workspace}, Extensions = {} }",
+            "",
+            "function ${0:${TM_FILENAME_BASE/[^0-9^a-z]//gi}}:Construct()",
+            "\t",
+            "end",
+            "",
+            "function ${0:${TM_FILENAME_BASE/[^0-9^a-z]//gi}}:Start()",
+            "\t",
+            "end",
+            "",
+            "function ${0:${TM_FILENAME_BASE/[^0-9^a-z]//gi}}:SteppedUpdate(dt)",
+            "\t",
+            "end",
+            "",
+            "function ${0:${TM_FILENAME_BASE/[^0-9^a-z]//gi}}:Stop()",
+            "\t",
+            "end",
+            "",
+            "return ${0:${TM_FILENAME_BASE/[^0-9^a-z]//gi}}"
+        ],
+        "description": "Component Template"
+    },
+
+    "Knit Controller": {
+        "prefix": ["knitcontroller"],
+        "body": [
+			"local ReplicatedStorage = game:GetService(\"ReplicatedStorage\")",
+            "",
+            "local Knit = require(ReplicatedStorage.fKit.Packages.Knit)",
+            "",
+            "local ${0:$TM_FILENAME_BASE} = Knit.CreateController { Name = \"${0:$TM_FILENAME_BASE}\" }",
+            "",
+            "function ${0:$TM_FILENAME_BASE}:KnitStart()",
+            "\t",
+            "end",
+            "",
+            "function ${0:$TM_FILENAME_BASE}:KnitInit()",
+            "\t",
+            "end",
+            "",
+            "return ${0:$TM_FILENAME_BASE}"
+        ],
+        "description": "Knit Controller template"
+    },
+
+    "Knit Require": {
+        "prefix": ["knitrequire"],
+        "body": ["local ${1:Name} = require(Knit.${2:Util}.${1:Name})"],
+        "description": "Knit Require template"
+    }
+}
