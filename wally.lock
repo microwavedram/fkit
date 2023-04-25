@@ -15,7 +15,7 @@ dependencies = []
 [[package]]
 name = "microwavedram/fkit"
 version = "0.1.0"
-dependencies = [["Cmdr", "evaera/cmdr@1.10.0"], ["Component", "sleitnick/component@2.4.6"], ["Knit", "sleitnick/knit@1.5.1"], ["Promise", "evaera/promise@4.0.0"]]
+dependencies = [["Cmdr", "evaera/cmdr@1.10.0"], ["Component", "sleitnick/component@2.4.6"], ["Knit", "sleitnick/knit@1.5.1"], ["Promise", "evaera/promise@4.0.0"], ["TableUtil", "sleitnick/table-util@1.2.0"]]
 
 [[package]]
 name = "sleitnick/comm"
@@ -45,6 +45,11 @@ dependencies = []
 [[package]]
 name = "sleitnick/symbol"
 version = "2.0.1"
+dependencies = []
+
+[[package]]
+name = "sleitnick/table-util"
+version = "1.2.0"
 dependencies = []
 
 [[package]]

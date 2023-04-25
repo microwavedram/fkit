@@ -31,7 +31,6 @@ function GunController:EquipGun(GunId)
     self.CurrentGun = GunId
     RunService:BindToRenderStep("fKit.GunAttach", Enum.RenderPriority.Camera.Value + 1, function()
         WorldModel:PivotTo(ViewmodelArms.RightHand.CFrame)
-        
     end)
 end
 
