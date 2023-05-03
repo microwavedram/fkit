@@ -49,8 +49,14 @@ end
 function ResourceService.Client:RequestResource(client, path)
     local ServerResource: Instance = self.Server:GetResource(path)
     
-    if ServerResource == nil then fKitService.Logger:Debug("debug.resource_requested_no_exist", path); return end
-    if ServerResource:GetAttribute("Client") ~= true then fKitService.Logger:Debug("debug.resource_requested_no_permission", path); return end
+    if ServerResource == nil then
+        fKitService.Logger:Debug("debug.resource_requested_no_exist", path)
+        return
+    end
+    if ServerResource:GetAttribute("Client") ~= true then
+        fKitService.Logger:Debug("debug.resource_requested_no_permission", path)
+        return
+    end
 
     local Container: ResourceContainer = self.Server.ResourceContainers:Get(client)
     

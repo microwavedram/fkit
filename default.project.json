@@ -27,6 +27,7 @@
         },
         "Resources": {
           "$className": "Folder",
+          "$path": "src/resources",
           "$ignoreUnknownInstances": true
         }
       }

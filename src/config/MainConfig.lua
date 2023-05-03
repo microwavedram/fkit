@@ -18,7 +18,7 @@ return {
         who make money off it. I could have very easily obfuscated this whole
         framework and started forcing people to buy it with excessive amounts of money, however
         I believe that this is the wrong approch as it prevents you (a developer)
-        from building upon this framework and morphing it to your requirements.
+        from building upon this framework and spinning it to your requirements.
 
         Thank You
         (you can now go set "I_HAVE_READ_THIS = true")
@@ -32,6 +32,13 @@ return {
     -- LANGUAGE --
     LANGUAGE = "en_us";
     
-    -- VIEWMODELS --
-    ARMS = "Arms/Debug Arms"
+    -- VIEWMODEL --
+    Viewmodel = {
+        Viewmodel = "Arms/Development Arms";
+
+        Spring = {
+            Speed = 50;
+            Damper = 1
+        };
+    };
 }

@@ -2,17 +2,17 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Knit = require(ReplicatedStorage.fKit.Packages.Knit)
 
-local GunService = Knit.CreateService {
+local WeaponService = Knit.CreateService {
     Name = "GunService",
     Client = {},
 }
 
-function GunService:KnitStart()
+function WeaponService:KnitStart()
     
 end
 
-function GunService:KnitInit()
+function WeaponService:KnitInit()
     
 end
 
-return GunService
+return WeaponService

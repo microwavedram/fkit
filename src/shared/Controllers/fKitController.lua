@@ -10,6 +10,10 @@ local Config = require(ReplicatedStorage.fKit.Configuration.MainConfig)
 local fKitController = Knit.CreateController { Name = "fKitController" }
 
 function fKitController:KnitStart()
+    
+end
+
+function fKitController:KnitInit()
     self.Logger = Logger.new("fKit Client", RunService:IsStudio())
     
     self.Logger("fKit client initialisation start")
@@ -20,10 +24,6 @@ function fKitController:KnitStart()
     self.Logger._languageParser = self.LanguageParser
 
     self.Logger("log.startup.success")
-end
-
-function fKitController:KnitInit()
-    
 end
 
 return fKitController

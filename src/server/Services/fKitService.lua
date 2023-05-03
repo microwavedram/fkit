@@ -1,3 +1,4 @@
+local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
@@ -13,7 +14,6 @@ local fKitService = Knit.CreateService {
 }
 
 function fKitService:KnitStart()
-    
 end
 
 function fKitService:KnitInit()

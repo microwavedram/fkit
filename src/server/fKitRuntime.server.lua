@@ -5,10 +5,15 @@ local Knit = require(ReplicatedStorage.fKit.Packages.Knit)
 local Cmdr = require(ReplicatedStorage.fKit.Packages.Cmdr)
 local Config = require(ReplicatedStorage.fKit.Configuration.MainConfig)
 
-if Config.I_HAVE_READ_THIS == false then warn("fKit not configured. See ReplicatedStorage/fKit/Configuration/MainConfig") return end
+if Config.I_HAVE_READ_THIS == false then
+    warn("fKit not configured. See ReplicatedStorage/fKit/Configuration/MainConfig")
+    return
+end
 
 Knit.AddServices(ServerScriptService.fKit.Server.Services)
-for _,Component in pairs(ServerScriptService.fKit.Server.Components:GetChildren()) do require(Component) end
+for _,Component in pairs(ServerScriptService.fKit.Server.Components:GetChildren()) do
+    require(Component)
+end
 
 Knit.Start():andThen(function()
     Cmdr:RegisterDefaultCommands()
