@@ -1,0 +1,1 @@
+cp ~/.aftman/bin/* ./tools/

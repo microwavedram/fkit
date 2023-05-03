@@ -14,15 +14,31 @@ local Mouse = LocalPlayer:GetMouse()
 local Input = InputHandler.new()
 
 CameraModule.XSpring = Spring.new()
-CameraModule.YSpring = Spring.new()
-CameraModule.ZSpring = Spring.new()
-CameraModule.DSpring = Spring.new(20)
-CameraModule.OSpring = Spring.new(Vector3.new(0,2,0))
+CameraModule.XSpring.Speed = 20
+CameraModule.XSpring.Damper = 0.95
 
+CameraModule.YSpring = Spring.new()
+CameraModule.YSpring.Speed = 20
+CameraModule.YSpring.Damper = 0.95
+
+CameraModule.ZSpring = Spring.new()
+CameraModule.ZSpring.Speed = 20
+CameraModule.ZSpring.Damper = 0.95
+
+CameraModule.DSpring = Spring.new(20)
+CameraModule.DSpring.Speed = 20
+CameraModule.DSpring.Damper = 0.95
+
+CameraModule.OSpring = Spring.new(Vector3.new(0,2,0))
+CameraModule.OSpring.Speed = 20
+CameraModule.OSpring.Damper = 0.95
+
+CameraModule.MouseButton2Held = false
 
 CameraModule.Enabled = true
 CameraModule.Focus = nil
 CameraModule.FirstPerson = false
+CameraModule.LockMouse = true
 
 function CameraModule:CalculateCameraPosition()
     if self.Focus == nil then return end
@@ -51,6 +67,23 @@ function CameraModule:KnitStart()
         if self.Enabled and self.Focus then
             workspace.CurrentCamera.CameraType = Enum.CameraType.Fixed
 
+            local mouse_delta = Vector2.new()
+
+            if self.LockMouse then
+                UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
+
+                mouse_delta = UserInputService:GetMouseDelta()
+            else
+                if self.MouseButton2Held then
+                    UserInputService.MouseBehavior = Enum.MouseBehavior.LockCurrentPosition
+                else
+                    UserInputService.MouseBehavior = Enum.MouseBehavior.Default
+                end
+            end
+
+            self.XSpring.Target = self.XSpring.Target + mouse_delta.X * self.Sensitivity
+            self.YSpring.Target = self.YSpring.Target + mouse_delta.Y * self.Sensitivity
+            
             workspace.CurrentCamera.CFrame = self:CalculateCameraPosition()
         end
     end)
@@ -74,6 +107,9 @@ function CameraModule:KnitStart()
     Mouse.Move:Connect(function(...)
         print{...}
     end)
+
+    Input{Event = "InputBegan", AllowGameProcessed = true, Filter = {UserInputType = Enum.UserInputType.MouseButton2}}:Connect(function() self.MouseButton2Held = true end)
+    Input{Event = "InputEnded", AllowGameProcessed = true, Filter = {UserInputType = Enum.UserInputType.MouseButton2}}:Connect(function() self.MouseButton2Held = false end)
     
 end
 
