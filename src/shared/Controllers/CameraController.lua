@@ -93,7 +93,7 @@ function CameraController:KnitStart()
 
     RunService:BindToRenderStep("fKit.Camera", Enum.RenderPriority.Camera.Value, function()
 
-        if self.Enabled and self.Focus then
+        if self.Enabled and self.Focus and workspace.CurrentCamera.CameraType ~= Enum.CameraType.Scriptable then
             workspace.CurrentCamera.CameraType = Enum.CameraType.Fixed
 
             if self.FirstPerson then
@@ -118,7 +118,7 @@ function CameraController:KnitStart()
         end
     end)
 
-    RunService:BindToRenderStep("fKit.Character", Enum.RenderPriority.Character.Value + 1, function()
+    RunService:BindToRenderStep("fKit.Character", Enum.RenderPriority.Camera.Value - 1, function()
         if self.CurrentCharacter then
             if self.FirstPerson then
                 local Position = self.CurrentCharacter.HumanoidRootPart.CFrame.Position
@@ -158,6 +158,9 @@ function CameraController:KnitStart()
     workspace.CurrentCamera:GetPropertyChangedSignal("CameraType"):Connect(function(value)
         if value == Enum.CameraType.Scriptable then
             self.Enabled = false
+            UserInputService.MouseBehavior = Enum.MouseBehavior.Default
+        elseif value == Enum.CameraType.Fixed then
+            self.Enabled = true
         elseif value == Enum.CameraType.Custom then
             self.Enabled = true
         end

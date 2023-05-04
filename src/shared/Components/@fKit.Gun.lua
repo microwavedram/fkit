@@ -5,7 +5,7 @@ local Knit = require(ReplicatedStorage.fKit.Packages.Knit)
 local Component = require(ReplicatedStorage.fKit.Packages.Component)
 local LocalTool = require(ReplicatedStorage.fKit.Common.Extensions.LocalTool)
 
-local WeaponController = Knit.GetController("GunController")
+local WeaponController = Knit.GetController("WeaponController")
 
 local fKitGun = Component.new{ Tag = "@fKit.Gun", Ancestors = { Players, workspace }, Extensions = { LocalTool } }
 

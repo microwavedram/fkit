@@ -10,7 +10,7 @@ local CameraController
 local ResourceService
 local fKitController
 
-local WeaponController = Knit.CreateController { Name = "GunController" }
+local WeaponController = Knit.CreateController { Name = "WeaponController" }
 
 WeaponController.ResourceCache = {}
 WeaponController.Weapons = {}
