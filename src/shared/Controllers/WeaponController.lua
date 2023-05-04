@@ -5,6 +5,8 @@ local Trove = require(ReplicatedStorage.fKit.Packages.Trove)
 local Instancer = require(ReplicatedStorage.fKit.Common.Modules.Instancer)
 
 local ViewmodelController
+local AnimationController
+local CameraController
 local ResourceService
 local fKitController
 
@@ -17,6 +19,7 @@ WeaponController.ViewmodelTrove = Trove.new()
 function WeaponController:UnEquipWeapon()
     self.ViewmodelTrove:Clean()
     self.CurrentWeaponBehavior:fKitUnEquip()
+    CameraController.WeaponHeld = false
 end
 
 function WeaponController:EquipWeapon(WeaponId, CachedId)
@@ -25,7 +28,6 @@ function WeaponController:EquipWeapon(WeaponId, CachedId)
         self:UnEquipWeapon()
     end
 
-    
     local WorldModel: Model = self.ResourceCache[`Weapons/{WeaponId}/WorldModel`] or ResourceService:RequestResource(`Weapons/{WeaponId}/WorldModel`):expect()
     self.ResourceCache[`Weapons/{WeaponId}/WorldModel`] = WorldModel
 
@@ -85,6 +87,16 @@ function WeaponController:EquipWeapon(WeaponId, CachedId)
         Parent = Holder
     }
 
+    local EquipAnimation = Animations:FindFirstChild("Equip")
+
+    if EquipAnimation then
+        local Animation = AnimationController:LoadAnimation(ViewmodelArms, EquipAnimation)
+
+        Animation:Play()
+    else
+        fKitController.Logger:Warn("warn.weapon.no_equip", `Weapons/{WeaponId}/Animations/Equip`)
+    end
+
     self.ViewmodelTrove:Add(Weld)
     self.ViewmodelTrove:Add(WorldModel)
     
@@ -93,6 +105,7 @@ function WeaponController:EquipWeapon(WeaponId, CachedId)
 
     Behavior:fKitEquip()
 
+    CameraController.WeaponHeld = true
     return Behavior.Id
 end
 
@@ -100,7 +113,9 @@ function WeaponController:KnitStart()
     ResourceService = Knit.GetService("ResourceService")
 
     ViewmodelController = Knit.GetController("ViewmodelController")
+    AnimationController = Knit.GetController("AnimationController")
     fKitController = Knit.GetController("fKitController")
+    CameraController = Knit.GetController("CameraController")
 end
 
 function WeaponController:KnitInit()

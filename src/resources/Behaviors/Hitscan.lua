@@ -34,8 +34,6 @@ function Hitscan.new(WeaponModel: Instance, Viewmodel: Instance, Behavior: table
 end
 
 function Hitscan:SetADS(State)
-    print(State)
-
     if self.CurrentADSAnimation then
         self.CurrentADSAnimation:Stop()
         self.Cancelable:Cancel()
@@ -72,7 +70,6 @@ function Hitscan:SetADS(State)
 end
 
 function Hitscan:fKitEquip()
-    print("Equip")
     Input{ Event = "InputBegan", Filter = { UserInputType = Enum.UserInputType.MouseButton2 } }:Connect(function()
         self:SetADS(true)
     end)
@@ -80,7 +77,10 @@ function Hitscan:fKitEquip()
         self:SetADS(false)
     end)
 
-    for _,Animation in pairs(self.Instance:WaitForChild("Animations", 1):GetChildren()) do
+    local AnimationFolder = self.Instance:WaitForChild("Animations", 1)
+    if AnimationFolder == nil then return end
+
+    for _,Animation in pairs(AnimationFolder:GetChildren()) do
         self.Animations[Animation.Name] = AnimationController:LoadAnimation(self.Viewmodel, Animation)
     end
     
@@ -89,7 +89,6 @@ function Hitscan:fKitEquip()
 end
 
 function Hitscan:fKitUnEquip()
-    print("Un Equip")
     Input:DisconnectAll()
     self.Trove:Clean()
     if self.CurrentAnimation then
