@@ -10,9 +10,11 @@ if Config.I_HAVE_READ_THIS == false then
     return
 end
 
-Knit.AddServices(ServerScriptService.fKit.Server.Services)
-for _,Component in pairs(ServerScriptService.fKit.Server.Components:GetChildren()) do
-    require(Component)
+for _,Service in pairs(ServerScriptService.fKit.Server.Services:GetChildren()) do
+    local success, errorMessage = pcall(require, Service)
+    if not success then
+        warn("fKit Service Failed to Load", errorMessage)
+    end
 end
 
 Knit.Start():andThen(function()
@@ -20,6 +22,10 @@ Knit.Start():andThen(function()
     Cmdr.Registry:RegisterCommandsIn(ReplicatedStorage.fKit.Common.Cmdr.Commands)
     Cmdr.Registry:RegisterTypesIn(ReplicatedStorage.fKit.Common.Cmdr.Types)
     Cmdr.Registry:RegisterHooksIn(ReplicatedStorage.fKit.Common.Cmdr.Hooks)
+end):andThen(function()
+    for _,Component in pairs(ServerScriptService.fKit.Server.Components:GetChildren()) do
+        pcall(require, Component)
+    end
 end):catch(warn)
 
 _G.UPTIME = os.time()

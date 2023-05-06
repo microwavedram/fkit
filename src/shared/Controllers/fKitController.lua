@@ -10,7 +10,7 @@ local Config = require(ReplicatedStorage.fKit.Configuration.MainConfig)
 local fKitController = Knit.CreateController { Name = "fKitController" }
 
 function fKitController:KnitStart()
-    
+
 end
 
 function fKitController:KnitInit()

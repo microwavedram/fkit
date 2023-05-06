@@ -25,20 +25,46 @@ return {
         
         All of the original source code and instructions can be
         found on github (https://github.com/microwavedram/fkit)
-        ]]
+    ]]
     I_HAVE_READ_THIS = true;
+
+    --[[
+        things developers need to know
+
+        - all paths to instances ("Arms/Development Arms") are rooted at ServerScriptService/fKit/Resources
+        - for a client to access a resource, the resource requested needs to have the Client attribute set to true
+        - animations are done using a custom animation runner. animations are stored as keyframe sequences.
+        - keyframe sequences can be got from the target you are animating's AnimSaves model contained within after saving an animation
+    ]]
 
 
     -- LANGUAGE --
-    LANGUAGE = "en_us";
+    LANGUAGE = "en_us"; -- translators i need u :)
     
     -- VIEWMODEL --
     Viewmodel = {
         Viewmodel = "Arms/Development Arms";
+        
+        -- Used to try and replicate the client animations for other players
+        -- ["Character Part"] = {Origin = "Viewmodel Arm Origin, Target = "Viewmodel Hand"}
+        InverseKinematicsTargets = {
+            ["RightHand"] = {Origin = "RightArmRoot", Target = "RightHand"};
+            ["LeftHand"] = {Origin = "LeftArmRoot", Target = "LeftHand"};
+        };
 
+        -- Viewmodel Arm Spring [Camera->ViewmodelRoot]
         Spring = {
             Speed = 50;
-            Damper = 1
+            Damper = 0.8
         };
+    };
+
+    DynamicCrosshair = {
+        CastDistance = 4000;
+        CastParams = (function()
+            local CastParams = RaycastParams.new();
+            CastParams.RespectCanCollide = true
+            return CastParams
+        end)()
     };
 }

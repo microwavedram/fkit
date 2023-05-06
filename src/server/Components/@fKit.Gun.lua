@@ -21,9 +21,9 @@ function fKitGun:Start()
 
         if self.Player then
             if self.Instance.Parent == self.Player.Character then
-                self.GunId = WeaponService:EquipWeapon(self.Instance.Gun.Value, self.GunId)
+                self.GunId = WeaponService:EquipWeapon(self.Player, self.Instance.Gun.Value, self.GunId)
             elseif WeaponService.CurrentWeapon == self.Instance.Gun.Value then
-                WeaponService:UnEquipWeapon(self.GunId)
+                WeaponService:UnEquipWeapon(self.Player)
             end
         end
     end)

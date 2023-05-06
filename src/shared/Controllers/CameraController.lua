@@ -16,15 +16,15 @@ local Input = InputHandler.new()
 
 CameraController.XSpring = Spring.new()
 CameraController.XSpring.Speed = 50
-CameraController.XSpring.Damper = 0.95
+CameraController.XSpring.Damper = 0.5
 
 CameraController.YSpring = Spring.new()
 CameraController.YSpring.Speed = 50
-CameraController.YSpring.Damper = 0.95
+CameraController.YSpring.Damper = 0.5
 
 CameraController.ZSpring = Spring.new()
 CameraController.ZSpring.Speed = 50
-CameraController.ZSpring.Damper = 0.95
+CameraController.ZSpring.Damper = 0.5
 
 CameraController.DSpring = Spring.new(20)
 CameraController.DSpring.Speed = 50
@@ -34,13 +34,17 @@ CameraController.OSpring = Spring.new(Vector3.new(0,2,0))
 CameraController.OSpring.Speed = 50
 CameraController.OSpring.Damper = 0.95
 
-CameraController.CameraSensitivity = 0.001
+CameraController.CSpring = Spring.new()
+CameraController.CSpring.Speed = 100
+CameraController.CSpring.Damper = 0.5
+
+CameraController.CameraSensitivity = 0.0015
 CameraController.ZoomSensitivity = 3
 CameraController.MinZoom = 4
 CameraController.MaxZoom = 20
 CameraController.CharacterFadeTime = 0.25
 CameraController.NormalOffset  = Vector3.new(0,2,0)
-CameraController.ThirdPersonOffset = Vector3.new(2,2,0)
+CameraController.ThirdPersonOffset = Vector3.new(3,2,0)
 
 CameraController.CharacterTweenTrove = Trove.new()
 
@@ -77,7 +81,7 @@ function CameraController:CalculateCameraPosition()
     * CFrame.Angles(0, self.YSpring.Position, 0)
     * CFrame.Angles(self.XSpring.Position, 0, 0)
     * CFrame.Angles(0, 0, self.ZSpring.Position)
-    * CFrame.new(0,0,Distance)
+    * CFrame.new(0, 0, Distance)
 end
 
 function CameraController:KnitStart()
@@ -92,7 +96,6 @@ function CameraController:KnitStart()
     end
 
     RunService:BindToRenderStep("fKit.Camera", Enum.RenderPriority.Camera.Value, function()
-
         if self.Enabled and self.Focus and workspace.CurrentCamera.CameraType ~= Enum.CameraType.Scriptable then
             workspace.CurrentCamera.CameraType = Enum.CameraType.Fixed
 
@@ -100,12 +103,11 @@ function CameraController:KnitStart()
                 UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
             else
                 if self.WeaponHeld then
+                    UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
                     if self.MouseButton2Held then
-                        UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
                         self.OSpring.Target = self.ThirdPersonOffset
                     else
                         self.OSpring.Target = self.NormalOffset
-                        UserInputService.MouseBehavior = Enum.MouseBehavior.LockCurrentPosition
                     end
                 elseif self.MouseButton2Held then
                     UserInputService.MouseBehavior = Enum.MouseBehavior.LockCurrentPosition
@@ -118,12 +120,18 @@ function CameraController:KnitStart()
         end
     end)
 
-    RunService:BindToRenderStep("fKit.Character", Enum.RenderPriority.Camera.Value - 1, function()
+    RunService:BindToRenderStep("fKit.Character", Enum.RenderPriority.Camera.Value + 2, function()
         if self.CurrentCharacter then
-            if self.FirstPerson then
-                local Position = self.CurrentCharacter.HumanoidRootPart.CFrame.Position
+            local Position = self.CurrentCharacter.HumanoidRootPart.CFrame.Position
+            
+            if self.WeaponHeld and self.MouseButton2Held then
+                self.CSpring.Target = self.YSpring.Value
+                self.CurrentCharacter.HumanoidRootPart.CFrame = CFrame.new(Position) * CFrame.Angles(0,self.CSpring.Position,0)
+            end
 
-                self.CurrentCharacter.HumanoidRootPart.CFrame = CFrame.new(Position) * CFrame.Angles(0,self.YSpring.Position,0)
+            if self.FirstPerson then
+                self.CSpring.Target = self.YSpring.Value
+                self.CurrentCharacter.HumanoidRootPart.CFrame = CFrame.new(Position) * CFrame.Angles(0,self.CSpring.Position,0)
 
                 self.CharacterTweenTrove:Clean()
                 for _,Part in pairs(self.CurrentCharacter:GetDescendants()) do
@@ -151,6 +159,8 @@ function CameraController:KnitStart()
         if LocalPlayer.Character then
             CharacterAdded(LocalPlayer.Character)
         end
+
+        self.FirstPerson = false
     end
 
     LocalPlayer.CharacterRemoving:Connect(CharacterRemoving)
@@ -159,9 +169,7 @@ function CameraController:KnitStart()
         if value == Enum.CameraType.Scriptable then
             self.Enabled = false
             UserInputService.MouseBehavior = Enum.MouseBehavior.Default
-        elseif value == Enum.CameraType.Fixed then
-            self.Enabled = true
-        elseif value == Enum.CameraType.Custom then
+        elseif value == Enum.CameraType.Fixed or value == Enum.CameraType.Custom then
             self.Enabled = true
         end
     end)
@@ -180,9 +188,16 @@ function CameraController:KnitStart()
         if self.FirstPerson then return end
         self.DSpring.Target = clamp(self.DSpring.Target - input.Position.Z * self.ZoomSensitivity, self.MinZoom, self.MaxZoom)
     end)
-
     Input{Event = "InputBegan", Filter = {UserInputType = Enum.UserInputType.Keyboard, KeyCode = Enum.KeyCode.T}}:Connect(function()
         self.FirstPerson = not self.FirstPerson
+    end)
+    Input{Event = "InputBegan", Filter = {UserInputType = Enum.UserInputType.Keyboard, KeyCode = Enum.KeyCode.G}}:Connect(function()
+        workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
+        self.Enabled = false
+    end)
+    Input{Event = "InputEnded", Filter = {UserInputType = Enum.UserInputType.Keyboard, KeyCode = Enum.KeyCode.G}}:Connect(function()
+        workspace.CurrentCamera.CameraType = Enum.CameraType.Fixed
+        self.Enabled = true
     end)
 end
 

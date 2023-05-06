@@ -5,6 +5,7 @@ return {
 
     ["debug.resource_requested_no_permission"] = "Resource \"%%s\" was requested but was disallowed";
     ["debug.resource_requested_no_exist"] = "Resource \"%%s\" was requested but does not exist";
+    ["debug.character_no_exist"] = "Character does not exist. Cannot equip.";
 
     ["warn.weapon.no_equip"] = "Failed to find an equip animation at \"%%s\", skipping";
     ["error.weapon.behavior_fail_load"] = "WeaponBehavior \"%%s\" failed to load. \n%%s";

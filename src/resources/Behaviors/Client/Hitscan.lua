@@ -7,18 +7,19 @@ local Cancelable = require(ReplicatedStorage.fKit.Common.Modules.Cancelable)
 local InputHandler = require(ReplicatedStorage.fKit.Common.Modules.InputHandler)
 
 local AnimationController = Knit.GetController("AnimationController")
+local WeaponService = Knit.GetService("WeaponService")
 
 local Input = InputHandler.new()
 
 local Hitscan = {}
 Hitscan.__index = Hitscan
 
-function Hitscan.new(WeaponModel: Instance, Viewmodel: Instance, Behavior: table)
+function Hitscan.new(WeaponModel: Instance, Viewmodel: Instance, Settings: table)
     local self = setmetatable({}, Hitscan)
 
     self.Instance = WeaponModel
     self.Viewmodel = Viewmodel
-    self.Behavior = Behavior
+    self.Behavior = Settings
 
     self.Id = HttpService:GenerateGUID(false)
 
@@ -28,9 +29,33 @@ function Hitscan.new(WeaponModel: Instance, Viewmodel: Instance, Behavior: table
     self.Animations = {}
     self.Cancelable = Cancelable.new()
 
+    self.CurrentClip = Settings.ClipSize
+    self.FireMode = Settings.FireModes[1]
+    self.FireModeIndex = 1
+
+    self.Firing = true
+    self.LastFireTime = 0
+
     self.Trove = Trove.new()
 
     return self
+end
+
+function Hitscan:Empty()
+    print("Empty")
+end
+
+function Hitscan:Fire()
+    if self.CurrentClip <= 0 then 
+        self:Empty()
+    end
+    self.LastFireTime = tick()
+    self.CurrentClip = self.CurrentClip - 1
+    print("BANG")
+
+    for _ = 1,self.Behavior.BulletsPerShot,1 do
+        WeaponService:FireBullet(self)
+    end
 end
 
 function Hitscan:SetADS(State)
@@ -69,12 +94,60 @@ function Hitscan:SetADS(State)
     end)
 end
 
+function Hitscan:MouseButton1Down()
+    if self.FireMode == "SEMI" then
+        if self.LastFireTime + self.Behavior.FireDelay < tick() then
+            self.Firing = true
+            self:Fire()
+            self.Firing = false
+        end
+    elseif self.FireMode == "BURST" then
+        if self.LastFireTime + self.Behavior.FireDelay < tick() then
+            self.Firing = true
+            for _ = 1,math.min(3,self.CurrentClip),1 do
+                self:Fire()
+                task.wait(self.Behavior.BurstDelay)
+            end
+            self.Firing = false
+        end
+    elseif self.FireMode == "AUTO" then
+        self.Firing = true
+        while self.MouseButton1 do
+            self:Fire()
+            task.wait(self.Behavior.FireDelay)
+        end
+        self.Firing = false
+    end
+end
+
+function Hitscan:MouseButton1Up()
+    
+end
+
+function Hitscan:MouseButton2Down()
+    
+end
+
+function Hitscan:MouseButton2Up()
+    
+end
+
 function Hitscan:fKitEquip()
     Input{ Event = "InputBegan", Filter = { UserInputType = Enum.UserInputType.MouseButton2 } }:Connect(function()
         self:SetADS(true)
     end)
     Input{ Event = "InputEnded", Filter = { UserInputType = Enum.UserInputType.MouseButton2 } }:Connect(function()
         self:SetADS(false)
+    end)
+    Input{ Event = "InputBegan", Filter = { UserInputType = Enum.UserInputType.Keyboard, KeyCode = Enum.KeyCode.C } }:Connect(function()
+        self.FireModeIndex = self.FireModeIndex + 1
+        if self.FireModeIndex > #self.Behavior.FireModes then
+            self.FireModeIndex = 1
+        end
+
+        self.FireMode = self.Behavior.FireModes[self.FireModeIndex]
+
+        print(self.FireMode)
     end)
 
     local AnimationFolder = self.Instance:WaitForChild("Animations", 1)

@@ -8,6 +8,7 @@ local Spring = require(ReplicatedStorage.fKit.Common.Modules.Spring)
 local Config = require(ReplicatedStorage.fKit.Configuration.MainConfig)
 
 local ResourceService
+local WeaponService
 
 local CameraController
 
@@ -36,6 +37,7 @@ function ViewmodelController:UseViewmodel(Viewmodel)
 end
 
 function ViewmodelController:KnitStart()
+    WeaponService = Knit.GetService("WeaponService")
     ResourceService = Knit.GetService("ResourceService")
     CameraController = Knit.GetController("CameraController")
 
