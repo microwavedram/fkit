@@ -21,7 +21,6 @@ local WeaponService
 local WeaponController = Knit.CreateController { Name = "WeaponController" }
 
 local LocalPlayer = Players.LocalPlayer
-local Mouse = LocalPlayer:GetMouse()
 local Input = InputHandler.new()
 
 WeaponController.Weapons = {}

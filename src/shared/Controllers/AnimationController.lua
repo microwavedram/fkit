@@ -89,10 +89,8 @@ function AnimationController:KnitStart()
     fKitController = Knit.GetController("fKitController")
 
     local a = self:LoadAnimation(workspace.AnimationTest,workspace.AnimationTest.AnimSaves.Movement)
-    local b = self:LoadAnimation(workspace["Development Arms"],workspace["Development Arms"].AnimSaves.ADS)
 
     a:Play()
-    b:Play()
 end
 
 function AnimationController:KnitInit()
