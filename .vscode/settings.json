@@ -1,3 +1,4 @@
 {
-    "workbench.tree.indent": 24
+    "workbench.tree.indent": 24,
+    "explorer.compactFolders": false
 }
