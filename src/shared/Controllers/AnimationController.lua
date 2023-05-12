@@ -88,7 +88,7 @@ end
 function AnimationController:KnitStart()
     fKitController = Knit.GetController("fKitController")
 
-    local a = self:LoadAnimation(workspace.AnimationTest,workspace.AnimationTest.AnimSaves.Movement)
+    local a = self:LoadAnimation(workspace.AnimationTest, workspace.AnimationTest.AnimSaves.Movement)
 
     a:Play()
 end
