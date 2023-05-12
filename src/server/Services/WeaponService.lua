@@ -31,6 +31,7 @@ function WeaponService:EquipWeapon(Player, WeaponId, CachedId)
         fKitService.Logger:Debug("debug.character_no_exist")
         return
     end
+
     -- Unequip held weapon before
     if self.CurrentWeapons[Player] ~= nil then
         self:UnEquipWeapon(Player)
@@ -121,7 +122,7 @@ function WeaponService.Client:GetServersideModelName(sender)
 end
 
 function WeaponService.Client:FireBullet(sender, Behavior)
-    
+    print(sender, Behavior)
 end
 
 return WeaponService
