@@ -14,6 +14,10 @@ function Hitscan.new(WeaponModel: Instance, Behavior: table)
     return self
 end
 
+function Hitscan:fKitFire()
+    
+end
+
 function Hitscan:fKitEquip()
 
 end
