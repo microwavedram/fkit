@@ -42,7 +42,7 @@ function WeaponController:UnEquipWeapon()
     CameraController.WeaponHeld = false
 end
 
-function WeaponController:EquipWeapon(WeaponId, CachedId)
+function WeaponController:EquipWeapon(WeaponId, BehaviorId)
     -- Unequip held weapon before
     if self.CurrentWeapon ~= nil then
         self:UnEquipWeapon()
@@ -94,7 +94,7 @@ function WeaponController:EquipWeapon(WeaponId, CachedId)
     local ViewmodelArms: Model = ViewmodelController.CurrentViewmodel
     WeaponModel.Parent = ViewmodelArms.RightHand
 
-    local Behavior = self.Weapons[CachedId] or BehaviorType.new(WeaponModel, ViewmodelArms, WeaponBehavior.Behavior)
+    local Behavior = self.Weapons[BehaviorId] or BehaviorType.new(WeaponModel, ViewmodelArms, WeaponBehavior.Behavior, BehaviorId)
     self.Weapons[Behavior.Id] = Behavior
     Behavior.Instance = WeaponModel
     Behavior.Viewmodel = ViewmodelArms
@@ -151,6 +151,10 @@ function WeaponController:KnitStart()
 
 
     self.ReticleUI = LocalPlayer.PlayerGui:WaitForChild("Reticle")
+
+    WeaponService.EquipWeapon:Connect(function(WeaponId, BehaviorId)
+        self:EquipWeapon(WeaponId, BehaviorId)
+    end)
 
     Input{Event = "InputBegan", AllowGameProcessed = true, Filter = {UserInputType = Enum.UserInputType.MouseButton1}}:Connect(function()
         self.MouseButton1Held = true

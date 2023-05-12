@@ -6,6 +6,7 @@ local Component = require(ReplicatedStorage.fKit.Packages.Component)
 local LocalTool = require(ReplicatedStorage.fKit.Common.Extensions.LocalTool)
 
 local WeaponController = Knit.GetController("WeaponController")
+local WeaponService = Knit.GetService("WeaponService")
 
 local fKitGun = Component.new{ Tag = "@fKit.Gun", Ancestors = { Players, workspace }, Extensions = { LocalTool } }
 
@@ -14,6 +15,10 @@ local LocalPlayer = Players.LocalPlayer
 function fKitGun:Start()
     self.Instance.AncestryChanged:Connect(function()
         if self.Instance.Parent == LocalPlayer.Character then
+            if self.GunId then
+                self.GunId = WeaponService:RequestId(self.Instance):expect()
+            end
+
             self.GunId = WeaponController:EquipWeapon(self.Instance.Gun.Value, self.GunId)
         elseif WeaponController.CurrentWeapon == self.Instance.Gun.Value then
             WeaponController:UnEquipWeapon(self.GunId)

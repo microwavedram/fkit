@@ -1,10 +1,13 @@
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local ServerScriptService = game:GetService("ServerScriptService")
 
 local Knit = require(ReplicatedStorage.fKit.Packages.Knit)
 local Trove = require(ReplicatedStorage.fKit.Packages.Trove)
 local Instancer = require(ReplicatedStorage.fKit.Common.Modules.Instancer)
+
+local fKitGun = require(ServerScriptService.fKit.Server.Components["@fKit.Gun"])
 
 local fKitService
 local ResourceService
@@ -17,6 +20,8 @@ local WeaponService = Knit.CreateService {
 WeaponService.Weapons = {}
 WeaponService.CurrentWeapons = {}
 WeaponService.WeaponTroves = {}
+
+WeaponService.Client.EquipWeapon = Knit.CreateSignal()
 
 function WeaponService:UnEquipWeapon(Player)
     self.WeaponTroves[Player]:Clean()
@@ -72,6 +77,8 @@ function WeaponService:EquipWeapon(Player, WeaponId, CachedId)
 
     local Behavior = self.Weapons[Player][CachedId] or WeaponBehaviorType.new(WeaponModel)
 
+
+
     local WeldTo = Player.Character:FindFirstChild(WeaponBehavior.Render.Viewmodel.WeldTo)
 
     WeaponModel.Name = HttpService:GenerateGUID(false)
@@ -91,6 +98,7 @@ function WeaponService:EquipWeapon(Player, WeaponId, CachedId)
 
     self.WeaponTroves[Player]:Add(Weld)
     self.WeaponTroves[Player]:Add(WeaponModel)
+
     
     return Behavior.Id
 end
@@ -111,6 +119,16 @@ end
 
 function WeaponService:KnitInit()
     
+end
+
+function WeaponService.Client:RequestId(sender, tool)
+    if tool.Parent == sender.Character or tool.Parent == sender.Backpack then
+        local Component = fKitGun:FromInstance(tool)
+
+        if Component then
+            return Component.GunId
+        end
+    end
 end
 
 function WeaponService.Client:GetServersideModelName(sender)

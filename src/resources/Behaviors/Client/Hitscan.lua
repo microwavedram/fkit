@@ -7,6 +7,7 @@ local Cancelable = require(ReplicatedStorage.fKit.Common.Modules.Cancelable)
 local InputHandler = require(ReplicatedStorage.fKit.Common.Modules.InputHandler)
 
 local AnimationController = Knit.GetController("AnimationController")
+local fKitController = Knit.GetController("fKitController")
 local WeaponService = Knit.GetService("WeaponService")
 
 local Input = InputHandler.new()
@@ -14,14 +15,18 @@ local Input = InputHandler.new()
 local Hitscan = {}
 Hitscan.__index = Hitscan
 
-function Hitscan.new(WeaponModel: Instance, Viewmodel: Instance, Settings: table)
+function Hitscan.new(WeaponModel: Instance, Viewmodel: Instance, Settings: table, Id)
     local self = setmetatable({}, Hitscan)
 
     self.Instance = WeaponModel
     self.Viewmodel = Viewmodel
     self.Behavior = Settings
 
-    self.Id = HttpService:GenerateGUID(false)
+    self.Id = Id
+    if Id == nil then
+        fKitController.Logger:Debug("debug.weapon.no_server_id")
+        self.Id = HttpService:GenerateGUID(false)
+    end
 
     self.CurrentADSAnimation = nil              
     self.CurrentAnimation = nil        
